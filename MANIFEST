@@ -6,6 +6,7 @@ README.md
 cpanfile
 lib/Test/More/Hooks.pm
 t/Test/More/Hooks.t
+t/Test/More/Hooks/clear_hooks_after_scope_out.t
 t/Test/More/Hooks/load_after_test-more.t
 META.yml
 MANIFEST
