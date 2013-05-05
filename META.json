@@ -52,7 +52,7 @@
    "provides" : {
       "Test::More::Hooks" : {
          "file" : "lib/Test/More/Hooks.pm",
-         "version" : "0.04"
+         "version" : "0.1"
       }
    },
    "release_status" : "stable",
@@ -66,5 +66,5 @@
          "web" : "https://github.com/ainame/p5-Test-More-Hooks"
       }
    },
-   "version" : "0.04"
+   "version" : "0.1"
 }

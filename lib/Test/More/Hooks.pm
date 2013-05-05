@@ -3,13 +3,14 @@ use 5.008005;
 use strict;
 use warnings;
 
-our $VERSION = "0.04";
+our $VERSION = "0.1";
 use Carp qw(croak);
 use Test::Builder::Module;
 our @ISA    = qw(Test::Builder::Module);
 our @EXPORT = qw(subtest before after);
 
-my $LEVEL  = 0;
+# $ LEVEL is controlled by the local variable.
+our $LEVEL  = 0;
 my $BEFORE = {};
 my $AFTER  = {};
 
@@ -21,13 +22,15 @@ BEGIN {
 sub subtest {
     my ($name, $subtests) = @_;
     $BEFORE->{$LEVEL}->() if 'CODE' eq ref $BEFORE->{$LEVEL};
-    $LEVEL += 1;
 
-    my $tb = Test::More::Hooks->builder;
-    my $result = $tb->subtest(@_);
-    _clean_hooks();
+    my $result;
+    {
+        local $LEVEL = $LEVEL + 1;
+        my $tb = Test::More::Hooks->builder;
+        $result = $tb->subtest(@_);
+        _clean_hooks();
+    };
 
-    $LEVEL -= 1;
     $AFTER->{$LEVEL}->() if 'CODE' eq ref $AFTER->{$LEVEL};
     return $result;
 }
@@ -74,11 +77,31 @@ Test::More::Hooks - It provides before/after hooks of subtest.
             my $actual = $subject->foo(1,2,3);
             is $actual, 10;
         };
+
+        subtest "given other argument" => sub {
+            my $actual = $subject->foo(4,5,6);
+            is $actual, 20;
+        };
     };
 
 =head1 DESCRIPTION
 
-Test::More::Hooks is ...
+Test::More::Hooks is simply testing module. This provides only before/after hooks
+for Test::More::subtest based test cases.
+
+=head1 FUNCTIONS
+
+=head2 before BLOCK
+
+Test::More::Hooks export this function by default.
+If you given BLOCK for 'before' function, Test::More::Hooks would register this BLOCK with the 'before stack'.
+Then, it is executed before the process continue to each subtest blocks of same level variable scope.
+
+=head2 after BLOCK
+
+Test::More::Hooks export this function by default.
+If you given BLOCK for 'after' function, Test::More::Hooks would register this BLOCK with the 'after stack'.
+Then, it is executed after the process go out each subtest blocks of same level variable scope.
 
 =head1 LICENSE
 
