@@ -3,6 +3,7 @@ abstract: 'It provides before/after hooks of subtest.'
 author:
   - 'ainame <ainame954@facebook.com>'
 build_requires:
+  Test::Exception: 0.32
   Test::More: 0.98
 configure_requires:
   CPAN::Meta: 0
@@ -27,11 +28,11 @@ no_index:
 provides:
   Test::More::Hooks:
     file: lib/Test/More/Hooks.pm
-    version: 0.11
+    version: 0.12
 requires:
   perl: 5.008005
 resources:
   bugtracker: https://github.com/ainame/p5-Test-More-Hooks/issues
   homepage: https://github.com/ainame/p5-Test-More-Hooks
   repository: git://github.com/ainame/p5-Test-More-Hooks.git
-version: 0.11
+version: 0.12
